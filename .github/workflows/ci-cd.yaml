@@ -6,16 +6,14 @@ on:
       - main
 
 jobs:
-
   build-and-deploy:
-    runs-on: ubuntu-{{ github.sha }}
+    runs-on: ubuntu-${{ github.sha }}
 
     permissions:
       contents: read
       id-token: write
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -38,10 +36,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cloud-app:{{ github.sha }} .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cloud-app:${{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-app:{{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-app:${{ github.sha }}
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
