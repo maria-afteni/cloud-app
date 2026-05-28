@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 40px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #3b82f6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .response-box {
+            margin-top: 40px;
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            color: #4ade80;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Dashboard</h1>
+
+<div class="dashboard">
+
+    <div class="card">
+        <h2>Generate Logs</h2>
+        <p>Create INFO/WARN/ERROR logs for Loki.</p>
+
+        <button onclick="callEndpoint('/logs')">
+            Generate Logs
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Slow Request</h2>
+        <p>Simulate high latency request.</p>
+
+        <button onclick="callEndpoint('/slow')">
+            Run Slow Request
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>CPU Load</h2>
+        <p>Generate CPU stress for autoscaling.</p>
+
+        <button onclick="callEndpoint('/cpu')">
+            Generate CPU Load
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Simulate Error</h2>
+        <p>Create application failure and error logs.</p>
+
+        <button onclick="callEndpoint('/error')">
+            Trigger Error
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Health Check</h2>
+        <p>Check Spring Boot actuator health.</p>
+
+        <button onclick="callEndpoint('/actuator/health')">
+            Open Health
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Prometheus Metrics</h2>
+        <p>Expose application metrics.</p>
+
+        <button onclick="callEndpoint('/actuator/prometheus')">
+            Open Metrics
+        </button>
+    </div>
+
+</div>
+
+<div class="response-box">
+    <h2>Response</h2>
+    <pre id="response">
+Waiting for action...
+    </pre>
+</div>
+
+<script>
+
+    async function callEndpoint(url) {
+
+        const responseBox = document.getElementById("response")
+
+        responseBox.innerText = "Loading..."
+
+        try {
+
+            const response = await fetch(url)
+
+            const text = await response.text()
+
+            responseBox.innerText = text
+
+        } catch (e) {
+
+            responseBox.innerText = "Request failed"
+        }
+    }
+
+</script>
+
+</body>
+</html>
