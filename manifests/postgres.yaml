@@ -12,7 +12,6 @@ spec:
       storage: 1Gi
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,12 +34,21 @@ spec:
         - name: postgres
           image: postgres:16
 
+          ports:
+            - containerPort: 5432
+
           env:
+            - name: POSTGRES_DB
+              value: cloudapp
+
+            - name: POSTGRES_USER
+              value: postgres
+
             - name: POSTGRES_PASSWORD
               value: password
 
-          ports:
-            - containerPort: 5432
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata/data
 
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
@@ -50,3 +58,19 @@ spec:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+
+spec:
+  selector:
+    app: postgres
+
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+  type: ClusterIP

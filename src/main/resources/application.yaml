@@ -1,12 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres-service:5432/cloudapp
+    username: postgres
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
-
-  endpoint:
-    health:
-      show-details: always
 
 logging:
   level:

@@ -89,4 +89,14 @@ class MainController {
             "timestamp" to LocalDateTime.now().toString()
         )
     }
+
+    @Entity
+    data class TestEntity(
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        val id: Long = 0,
+
+        val name: String
+    )   
 }

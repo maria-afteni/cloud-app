@@ -8,7 +8,7 @@ on:
 jobs:
 
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-{{ github.sha }}
 
     permissions:
       contents: read
@@ -38,10 +38,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cloud-app:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/cloud-app:{{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-app:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-app:{{ github.sha }}
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
