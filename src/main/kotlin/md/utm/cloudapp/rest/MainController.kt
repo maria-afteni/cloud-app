@@ -90,13 +90,13 @@ class MainController {
         )
     }
 
-    @Entity
-    data class TestEntity(
+    @GetMapping("/version")
+    fun version(): Map<String, Any> {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long = 0,
-
-        val name: String
-    )   
+        return mapOf(
+            "version" to "UI_VERSION_2",
+            "pod" to (System.getenv("HOSTNAME") ?: "unknown"),
+            "timestamp" to LocalDateTime.now().toString()
+        )
+    }
 }
