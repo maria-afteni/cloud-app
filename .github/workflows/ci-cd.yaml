@@ -60,6 +60,12 @@ jobs:
           ${{ secrets.GKE_CLUSTER }} \
           --zone ${{ secrets.GKE_ZONE }} \
           --project ${{ secrets.GCP_PROJECT_ID }}
+          
+      - name: Deploy new image to GKE
+        run: |
+          kubectl set image deployment/cloud-app \
+          cloud-app=${{ secrets.DOCKER_USERNAME }}/cloud-app:${{ github.sha }}
 
-      - name: Restart deployment
-        run: kubectl rollout restart deployment/cloud-app
+      - name: Verify rollout
+        run: |
+          kubectl rollout status deployment/cloud-app
